@@ -8,6 +8,7 @@ package ldap
 
 import (
 	"fmt"
+	"strconv"
 
 	"github.com/majewsky/portunus/internal/core"
 )
@@ -95,9 +96,9 @@ func renderUser(u core.User, dnSuffix string, allGroups []core.Group) Object {
 			obj.Attributes["loginShell"] = []string{u.POSIX.LoginShell}
 		}
 		if u.POSIX.GECOS == "" {
-			obj.Attributes["gecos"] = []string{u.FullName()}
+			obj.Attributes["gecos"] = []string{strconv.QuoteToASCII(u.FullName())}
 		} else {
-			obj.Attributes["gecos"] = []string{u.POSIX.GECOS}
+			obj.Attributes["gecos"] = []string{strconv.QuoteToASCII(u.POSIX.GECOS)}
 		}
 		obj.Attributes["objectClass"] = append(obj.Attributes["objectClass"], "posixAccount")
 	}
